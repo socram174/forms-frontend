@@ -1,18 +1,43 @@
-import React from "react";
+import React,{ useState } from "react";
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 const { Header, Content, Footer } = Layout;
 import Navbar from "../../components/Navbar/Navbar";
-import { Card, Col, Row,Button, Checkbox, Form, Input } from 'antd';
+import { Card, Col, Row,Button, Checkbox, Form, Input, Alert} from 'antd';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLogin } from '../../state/index.js';
 
 const Home = () => {
     const {
         token: { colorBgContainer },
       } = theme.useToken();
       const items = [{key: '1', label: 'FORMS'},{ key: '2', label: 'Sections' }, { key: '3', label: 'Questions' }, { key: '4', label: 'Account information' }];
+      const [alertMessage, setAlertMessage] = useState(null);
+      const navigate = useNavigate();
+      const dispatch = useDispatch();
     
     
-      const onFinish = (values) => {
+      const onFinish = async (values) => {
+        setAlertMessage(null);
         console.log('Success:', values);
+        const response = await fetch('http://localhost:3000/api/auth/login/admin',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+        });
+        if(!response.ok){
+          setAlertMessage('Enter a valid email and password');
+          return;
+        }
+        const data = await response.json();
+        console.log(data);
+        dispatch(setLogin({
+          token: data.token,
+          admin: data.admin
+        }));
+        navigate('/admin');
       };
       const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -48,6 +73,7 @@ const Home = () => {
                   }}
                 >
     <Card title="Log in as an administrator" headStyle={{backgroundColor:"#82CD47"}} style={{ border: "2px solid black",width:"19rem" }}>
+      
     <Form
       name="basic"
       labelCol={{
@@ -63,9 +89,10 @@ const Home = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
+      {alertMessage && (<Alert message={alertMessage} type="error" showIcon />)}
       <Form.Item
-        label="Username"
-        name="username"
+        label="Email"
+        name="email"
         rules={[
           {
             required: true,
@@ -73,7 +100,7 @@ const Home = () => {
           },
         ]}
       >
-        <Input />
+        <Input type="email" />
       </Form.Item>
 
       <Form.Item
