@@ -27,7 +27,7 @@ const Navbar = () => {
 
 
         <div>
-          <h1 key = {1} style={{color: "#82CD47", fontSize:"35px"}}>FORMS</h1>
+          <a href="/"><h1 key = {1} style={{color: "#82CD47", fontSize:"35px"}}>FORMS</h1></a>
         </div>
         <div style={{display:"flex", alignItems:'center', gap:'10%'}}>
           <h1 onClick={()=>{
