@@ -124,7 +124,7 @@ const Home = () => {
         }}
       >
         <Button  style={{backgroundColor:"#82CD47"}} type="primary" htmlType="submit">
-          Submit
+          Log in
         </Button>
       </Form.Item>
     </Form>
