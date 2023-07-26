@@ -37,7 +37,7 @@ const AdminProfile = () => {
     };
     console.log("Updated: ", updated);
     const response = await fetch(
-      `http://localhost:3000/api/admins/edit/${admin._id}`,
+      `${import.meta.env.VITE_BASE_APP_URL}api/admins/edit/${admin._id}`,
       {
         method: "POST",
         headers: {

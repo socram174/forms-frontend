@@ -20,7 +20,7 @@ const Home = () => {
       const onFinish = async (values) => {
         setAlertMessage(null);
         console.log('Success:', values);
-        const response = await fetch('http://localhost:3000/api/auth/login/admin',{
+        const response = await fetch(`${import.meta.env.VITE_BASE_APP_URL}api/auth/login/admin`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
